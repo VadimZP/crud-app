@@ -1,5 +1,8 @@
-import { call, put } from "redux-saga/effects";
-import axios from "axios";
+import { call, put, takeEvery } from "redux-saga/effects";
+
+import {
+    getPostsRequest
+} from "utils/API";
 
 export const types = {
     GET_POSTS_REQUESTED: 'crud-app/posts/GET_POSTS_REQUESTED',
@@ -19,8 +22,8 @@ export const types = {
     EDIT_POST_FAILED: 'crud-app/posts/EDIT_POST_FAILED'
 }
 
-export function getPostsRequested(author) {
-    return { type: types.GET_POSTS_REQUESTED, author }
+export function getPostsRequested() {
+    return { type: types.GET_POSTS_REQUESTED }
 }
 
 export function getPostsSucceed(posts) {
@@ -79,18 +82,19 @@ export function editPostFailed() {
     return { type: types.EDIT_POST_FAILED }
 }
 
-export default function posts(state = {}, action) {
+
+export default function posts(state = [], action) {
     switch (action.type) {
         case types.GET_POSTS_REQUESTED:
             return { ...state, loading: true, error: false}
         case types.GET_POSTS_SUCCEED:
-            return { ...state, posts: action.payload, loading: false, error: false }
+            return { ...state, ...action.payload, loading: false, error: false }
         case types.GET_POSTS_FAILED:
             return { ...state, loading: false, error: true}
         case types.GET_POST_REQUESTED:
             return { ...state, loading: true, error: false}
         case types.GET_POST_SUCCEED:
-            return { ...state, posts: [...state.posts, ...action.payload], loading: false, error: false }
+            return { ...state, ...action.payload, loading: false, error: false }
         case types.GET_POST_FAILED:
             return { ...state, loading: false, error: true}
         case types.ADD_POST_REQUESTED:
@@ -121,52 +125,16 @@ export default function posts(state = {}, action) {
     }
 }
 
-export function* fetchPosts(action) {
+export const postsSagas = [
+    takeEvery(types.GET_POST_REQUESTED, fetchPosts)
+];
+
+function* fetchPosts() {
     try {
-        const result = yield call(action.author)
+        const { data } = yield call(getPostsRequest);
 
-        yield put(getPostsSucceed())
+        yield put(getPostsSucceed(data));
     } catch (error) {
-        yield put(getPostsFailed())
-    }
-}
-
-export function* fetchPost(action) {
-    try {
-        const result = yield call(action.post_id)
-
-        yield put(getPostSucceed())
-    } catch (error) {
-        yield put(getPostFailed())
-    }
-}
-
-export function* sendPost(action) {
-    try {
-        const result = yield call(action.author, action.date, action.text)
-
-        yield put(addPostSucceed())
-    } catch (error) {
-        yield put(addPostFailed())
-    }
-}
-
-export function* deletePost(action) {
-    try {
-        const result = yield call(action.post_id)
-
-        yield put(deletePostSucceed())
-    } catch (error) {
-        yield put(deletePostFailed())
-    }
-}
-
-export function* editPost(action) {
-    try {
-        const result = yield call(action.post_id, action.date, action.text)
-
-        yield put(editPostSucceed(action.post_id, action.text))
-    } catch (error) {
-        yield put(editPostFailed())
+        yield put(getPostsFailed());
     }
 }

@@ -1,20 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-export class PostsRedux extends Component {
+import { AppState } from "state/configureStore";
+
+import { getPostsRequested } from "state/modules/posts";
+
+interface IPost {
+    text: string;
+    author: string;
+}
+
+interface IProps {
+    posts: IPost[];
+    getPostsRequested?: typeof getPostsRequested;
+}
+
+export class PostsRedux extends Component<IProps> {
+    static defaultProps = {
+        posts: [],
+    };
+
+    componentDidMount() {
+        const { getPostsRequested } = this.props;
+        // getPostsRequested();
+    }
     render() {
         return (
-            
-            <div/>
+            <p>Posts</p>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
-    posts: 
+const mapStateToProps = (state: AppState) => ({
+    posts: state.posts,
 });
 
-export default connect(mapStateToProps, {
-    sendPostRequested,
-    fetchPostsRequested,
-})(PostsRedux);
+export default connect(mapStateToProps,
+    { getPostsRequested },
+)(PostsRedux);
