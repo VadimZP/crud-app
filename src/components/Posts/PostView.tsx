@@ -5,7 +5,7 @@ interface Props {
     text: string;
 }
 
-export default class Post extends Component {
+export default class PostView extends Component {
     render() {
         return (
             <div/>
