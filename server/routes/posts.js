@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
         console.log("TCL: data", data);
         res.status(200).send({ data });
     } catch (error) {
-        throw new Error('Something went wrong in "/posts" get request', e)
+        throw new Error('Something went wrong in "/posts" get request', error)
     }
 })
 
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
         const addedPost = await post.save();
         res.status(201).send({ data: addedPost });
     } catch (error) {
-        throw new Error('Something went wrong in "/posts" get request', e)
+        throw new Error('Something went wrong in "/posts" get request', error)
     }
 })
 

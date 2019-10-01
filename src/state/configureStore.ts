@@ -4,12 +4,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./modules/index";
 import rootSaga from "./sagas";
 
-declare global {
-    interface Window { MyNamespace: any; }
-}
-
-window.MyNamespace = window.MyNamespace || {};
-
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(

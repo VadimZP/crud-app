@@ -6,34 +6,31 @@ import { AppState } from "state/configureStore";
 import { getPostsRequested } from "state/modules/posts";
 
 interface IPost {
-    text: string;
-    author: string;
+    text?: string;
+    author?: string;
 }
 
 interface IProps {
-    posts: IPost[];
-    getPostsRequested?: typeof getPostsRequested;
+    posts?: IPost[];
+    getPostsRequested: typeof getPostsRequested;
 }
 
-export class PostsRedux extends Component<IProps> {
+class PostsRedux extends Component<IProps> {
     static defaultProps = {
-        posts: [],
-    };
+        getPostsRequested,
+    }
 
     componentDidMount() {
-        const { getPostsRequested } = this.props;
-        // getPostsRequested();
+        console.log(this.props);
     }
     render() {
         return (
-            <p>Posts</p>
+            <button onClick={this.props.getPostsRequested}>Click</button>
         );
     }
 }
 
-const mapStateToProps = (state: AppState) => ({
-    posts: state.posts,
-});
+const mapStateToProps = (state: AppState) => ({posts: state.posts})
 
 export default connect(mapStateToProps,
     { getPostsRequested },
