@@ -18,7 +18,7 @@ interface IProps {
 class PostsRedux extends Component<IProps> {
     static defaultProps = {
         getPostsRequested,
-    }
+    };
 
     componentDidMount() {
         console.log(this.props);
@@ -30,7 +30,7 @@ class PostsRedux extends Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: AppState) => ({posts: state.posts})
+const mapStateToProps = (state: AppState) => ({posts: state.posts});
 
 export default connect(mapStateToProps,
     { getPostsRequested },

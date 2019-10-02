@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 
 import {
     getPostsRequest,
@@ -26,11 +26,11 @@ export function getPostsRequested() {
     return { type: types.GET_POSTS_REQUESTED }
 }
 
-export function getPostsSucceed(data) {
+function getPostsSucceed(data) {
     return { type: types.GET_POSTS_SUCCEED, payload: data }
 }
 
-export function getPostsFailed() {
+function getPostsFailed() {
     return { type: types.GET_POSTS_FAILED }
 }
 
@@ -125,13 +125,10 @@ export default function posts(state = [], action) {
     }
 }
 
-export const postsSagas = [
-    takeEvery(types.GET_POST_REQUESTED, fetchPosts),
-];
+function* fetchPosts() {
+    console.log("TCL: function*fetchPosts -> fetchPosts");
 
-export function* fetchPosts() {
     try {
-        console.log("TCL: function*fetchPosts -> fetchPosts");
         const data = yield call(getPostsRequest);
 
         yield put(getPostsSucceed(data));
@@ -139,3 +136,7 @@ export function* fetchPosts() {
         yield put(getPostsFailed());
     }
 }
+
+export const postsSagas = [
+    takeLatest(types.GET_POST_REQUESTED, fetchPosts),
+];

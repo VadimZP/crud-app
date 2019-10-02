@@ -1,14 +1,14 @@
 import { applyMiddleware, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "./modules/index";
-import rootSaga from "./sagas";
+import rootReducer from "state/modules/index";
+import rootSaga from "state/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
 export type AppState = ReturnType<typeof rootReducer>;
