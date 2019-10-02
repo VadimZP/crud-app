@@ -9,8 +9,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const data = await Post.find();
-        console.log("TCL: data", data);
-        res.status(200).send({ data });
+        res.status(200).send(data);
     } catch (error) {
         throw new Error('Something went wrong in "/posts" get request', error)
     }

@@ -11,7 +11,16 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
-export type AppState = ReturnType<typeof rootReducer>;
+export interface IPost {
+  text?: string;
+  author?: string;
+}
+
+export interface AppState {
+  readonly posts: IPost[];
+  readonly loading: boolean;
+  readonly error: boolean;
+};
 
 sagaMiddleware.run(rootSaga);
 

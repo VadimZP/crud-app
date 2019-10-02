@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { AppState } from "state/configureStore";
+import { AppState, IPost } from "state/configureStore";
 
 import { getPostsRequested } from "state/modules/posts";
-
-interface IPost {
-    text?: string;
-    author?: string;
-}
 
 interface IProps {
     posts?: IPost[];
